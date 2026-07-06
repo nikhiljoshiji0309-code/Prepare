@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Prep Desk — JEE Study Tracker</title>
+<meta name="description" content="An offline study tracker for Class 12 JEE aspirants.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== SKIP LINK ===================== -->
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ===================== TOP BAR ===================== -->
+<header class="topbar" role="banner">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M4 4.5C4 3.67 4.67 3 5.5 3H12V21H5.5C4.67 21 4 20.33 4 19.5V4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M20 4.5C20 3.67 19.33 3 18.5 3H12V21H18.5C19.33 21 20 20.33 20 19.5V4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 3V21" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.6 2"/></svg>
+      </span>
+      <div class="brand-text">
+        <span class="brand-title">Prep Desk</span>
+        <span class="brand-sub">JEE 2027 · Class 12</span>
+      </div>
+    </div>
+
+    <div class="topbar-search">
+      <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="Search any chapter…" aria-label="Search chapters">
+      <kbd class="search-kbd">/</kbd>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="icon-btn" id="pomodoroToggleBtn" aria-haspopup="dialog" aria-expanded="false" title="Pomodoro timer">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 9V13L15 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 3H14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" aria-label="Toggle dark or light theme" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="19" height="19" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5V4.5M12 19.5V21.5M21.5 12H19.5M4.5 12H2.5M18.4 5.6L17 7M7 17L5.6 18.4M18.4 18.4L17 17M7 7L5.6 5.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="19" height="19" fill="none"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="menuToggleBtn" aria-label="Open settings and backup menu" title="Settings & backup">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none"><path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <section class="dashboard" aria-label="Progress dashboard">
+    <div class="dashboard-hero">
+      <div class="hero-ring-wrap">
+        <canvas id="overallRing" width="132" height="132" role="img" aria-label="Overall syllabus completion"></canvas>
+        <div class="hero-ring-label">
+          <span id="overallPct">0%</span>
+          <small>overall</small>
+        </div>
+      </div>
+      <div class="hero-copy">
+        <p class="hero-eyebrow" id="todayDate">Loading date…</p>
+        <h1 class="hero-quote" id="dailyQuote">Loading today's line…</h1>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong id="totalChapters">0</strong><span>total chapters</span></div>
+          <div class="hero-stat"><strong id="completedChapters">0</strong><span>completed</span></div>
+          <div class="hero-stat"><strong id="remainingChapters">0</strong><span>remaining</span></div>
+          <div class="hero-stat"><strong id="productivityScore">0</strong><span>productivity score</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="metric-card subject-physics">
+        <div class="metric-head"><span class="dot" aria-hidden="true"></span>Physics</div>
+        <div class="metric-value" id="physicsPct">0%</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="physicsBar"></div></div>
+      </div>
+      <div class="metric-card subject-chemistry">
+        <div class="metric-head"><span class="dot" aria-hidden="true"></span>Chemistry</div>
+        <div class="metric-value" id="chemistryPct">0%</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="chemistryBar"></div></div>
+      </div>
+      <div class="metric-card subject-maths">
+        <div class="metric-head"><span class="dot" aria-hidden="true"></span>Mathematics</div>
+        <div class="metric-value" id="mathsPct">0%</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="mathsBar"></div></div>
+      </div>
+      <div class="metric-card streak-card">
+        <div class="metric-head"><span class="flame" aria-hidden="true">🔥</span>Study Streak</div>
+        <div class="metric-value" id="currentStreak">0 days</div>
+        <div class="metric-sub">Longest: <span id="longestStreak">0</span> days</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTROLS: search state, filters ===================== -->
+  <section class="controls" aria-label="Filters">
+    <div class="filter-row" role="tablist" aria-label="Chapter status filters">
+      <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
+      <button class="chip" data-filter="completed" role="tab" aria-selected="false">Completed</button>
+      <button class="chip" data-filter="in-progress" role="tab" aria-selected="false">In Progress</button>
+      <button class="chip" data-filter="not-started" role="tab" aria-selected="false">Not Started</button>
+      <label class="chip toggle-chip">
+        <input type="checkbox" id="hideCompletedToggle">
+        <span>Hide Completed</span>
+      </label>
+    </div>
+
+    <div class="subject-tabs" role="tablist" aria-label="Subjects">
+      <button class="subject-tab active" data-subject="all" role="tab" aria-selected="true">All Subjects</button>
+      <button class="subject-tab" data-subject="physics" role="tab" aria-selected="false">Physics</button>
+      <button class="subject-tab" data-subject="chemistry" role="tab" aria-selected="false">Chemistry</button>
+      <button class="subject-tab" data-subject="maths" role="tab" aria-selected="false">Mathematics</button>
+    </div>
+  </section>
+
+  <!-- ===================== CHAPTER GRID ===================== -->
+  <section class="chapters-section" aria-label="Chapters">
+    <div id="chapterGrid" class="chapter-grid"></div>
+    <p id="emptyState" class="empty-state" hidden>No chapters match your search or filters. Try clearing them.</p>
+  </section>
+
+  <!-- ===================== STATISTICS ===================== -->
+  <section class="stats-section" aria-labelledby="statsHeading">
+    <h2 id="statsHeading" class="section-title">Statistics</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Completion by Subject</h3>
+        <canvas id="chartSubject" width="320" height="220"></canvas>
+      </div>
+      <div class="stat-card">
+        <h3>Weekly Study Activity</h3>
+        <canvas id="chartWeekly" width="320" height="220"></canvas>
+      </div>
+      <div class="stat-card">
+        <h3>Monthly Study Activity</h3>
+        <canvas id="chartMonthly" width="320" height="220"></canvas>
+      </div>
+      <div class="stat-card">
+        <h3>Completion Trend (30 days)</h3>
+        <canvas id="chartTrend" width="320" height="220"></canvas>
+      </div>
+      <div class="stat-card stat-card-wide">
+        <h3>Snapshot</h3>
+        <div class="snapshot-grid">
+          <div><span class="snapshot-label">Most completed subject</span><strong id="mostCompletedSubject">—</strong></div>
+          <div><span class="snapshot-label">Least completed subject</span><strong id="leastCompletedSubject">—</strong></div>
+          <div><span class="snapshot-label">Remaining work</span><strong id="remainingWorkStat">—</strong></div>
+          <div><span class="snapshot-label">Checklist items done</span><strong id="checklistItemsDone">—</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CALENDAR / HEATMAP ===================== -->
+  <section class="calendar-section" aria-labelledby="calendarHeading">
+    <div class="calendar-header">
+      <h2 id="calendarHeading" class="section-title">Study Calendar</h2>
+      <div class="calendar-nav">
+        <button class="icon-btn small" id="calPrevBtn" aria-label="Previous month">‹</button>
+        <span id="calMonthLabel">Month</span>
+        <button class="icon-btn small" id="calNextBtn" aria-label="Next month">›</button>
+      </div>
+    </div>
+    <div class="calendar-body">
+      <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Calendar"></div>
+    </div>
+    <div class="heatmap-wrap">
+      <h3>Study Heatmap</h3>
+      <div id="heatmapGrid" class="heatmap-grid" role="img" aria-label="Study activity heatmap for the last year"></div>
+      <div class="heatmap-legend">
+        <span>Less</span>
+        <span class="heat-swatch heat-0"></span>
+        <span class="heat-swatch heat-1"></span>
+        <span class="heat-swatch heat-2"></span>
+        <span class="heat-swatch heat-3"></span>
+        <span class="heat-swatch heat-4"></span>
+        <span>More</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== CHAPTER DETAIL DRAWER ===================== -->
+<div class="drawer-overlay" id="drawerOverlay" hidden></div>
+<aside class="drawer" id="chapterDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+  <div class="drawer-header">
+    <div>
+      <p class="drawer-subject" id="drawerSubject">Physics</p>
+      <h2 id="drawerTitle">Chapter Title</h2>
+    </div>
+    <button class="icon-btn" id="drawerCloseBtn" aria-label="Close chapter panel">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="drawer-progress">
+    <div class="drawer-ring-wrap">
+      <canvas id="drawerRing" width="72" height="72"></canvas>
+      <div class="drawer-ring-label"><span id="drawerPct">0%</span></div>
+    </div>
+    <div class="drawer-badge" id="drawerBadge">Not Started</div>
+  </div>
+
+  <div class="drawer-tabs" role="tablist">
+    <button class="drawer-tab active" data-tab="checklist" role="tab" aria-selected="true">Checklist</button>
+    <button class="drawer-tab" data-tab="notes" role="tab" aria-selected="false">Notes</button>
+  </div>
+
+  <div class="drawer-panel" id="panelChecklist">
+    <ul class="checklist" id="checklistItems"></ul>
+  </div>
+
+  <div class="drawer-panel" id="panelNotes" hidden>
+    <label class="field-label" for="notesPersonal">Personal Notes</label>
+    <textarea id="notesPersonal" rows="4" placeholder="Anything you want to remember about this chapter…"></textarea>
+
+    <label class="field-label" for="notesDoubts">Doubts</label>
+    <textarea id="notesDoubts" rows="3" placeholder="Doubts to clear with a teacher or mentor…"></textarea>
+
+    <label class="field-label" for="notesFormula">Important Formulae</label>
+    <textarea id="notesFormula" rows="3" placeholder="Key formulae worth revisiting…"></textarea>
+
+    <p class="autosave-hint">Saved automatically as you type.</p>
+  </div>
+</aside>
+
+<!-- ===================== POMODORO PANEL ===================== -->
+<div class="drawer-overlay" id="pomodoroOverlay" hidden></div>
+<aside class="pomodoro-panel" id="pomodoroPanel" role="dialog" aria-modal="true" aria-labelledby="pomodoroTitle" hidden>
+  <div class="drawer-header">
+    <h2 id="pomodoroTitle">Pomodoro Timer</h2>
+    <button class="icon-btn" id="pomodoroCloseBtn" aria-label="Close pomodoro timer">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="pomodoro-body">
+    <div class="pomodoro-mode-row">
+      <button class="chip pomodoro-mode active" data-mode="focus">Focus 25</button>
+      <button class="chip pomodoro-mode" data-mode="short">Short Break 5</button>
+      <button class="chip pomodoro-mode" data-mode="custom">Custom</button>
+    </div>
+
+    <div class="pomodoro-custom" id="pomodoroCustomRow" hidden>
+      <label for="customMinutes">Minutes</label>
+      <input type="number" id="customMinutes" min="1" max="180" value="25">
+    </div>
+
+    <div class="pomodoro-display">
+      <canvas id="pomodoroRing" width="200" height="200"></canvas>
+      <div class="pomodoro-time" id="pomodoroTime">25:00</div>
+    </div>
+
+    <div class="pomodoro-controls">
+      <button class="btn-secondary" id="pomodoroResetBtn">Reset</button>
+      <button class="btn-primary" id="pomodoroStartPauseBtn">Start</button>
+    </div>
+    <p class="pomodoro-hint">A soft chime plays when the timer completes.</p>
+  </div>
+</aside>
+
+<!-- ===================== SETTINGS / BACKUP PANEL ===================== -->
+<div class="drawer-overlay" id="settingsOverlay" hidden></div>
+<aside class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+  <div class="drawer-header">
+    <h2 id="settingsTitle">Settings & Backup</h2>
+    <button class="icon-btn" id="settingsCloseBtn" aria-label="Close settings panel">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="settings-body">
+    <section class="settings-block">
+      <h3>Appearance</h3>
+      <p>Choose the theme that's easiest on your eyes during long study sessions.</p>
+      <div class="settings-row">
+        <button class="btn-secondary" id="setLightBtn">Light Mode</button>
+        <button class="btn-secondary" id="setDarkBtn">Dark Mode</button>
+      </div>
+    </section>
+
+    <section class="settings-block">
+      <h3>Backup Your Progress</h3>
+      <p>Export everything to a JSON file you can keep safe, or restore it on another device.</p>
+      <div class="settings-row">
+        <button class="btn-primary" id="exportBtn">Export JSON</button>
+        <label class="btn-secondary file-btn">
+          Import JSON
+          <input type="file" id="importInput" accept="application/json" hidden>
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-block danger-block">
+      <h3>Reset Everything</h3>
+      <p>Clears every checkbox, note, streak and study log. This can't be undone unless you've exported a backup.</p>
+      <button class="btn-danger" id="resetBtn">Reset All Data</button>
+    </section>
+  </div>
+</aside>
+
+<!-- ===================== RESET CONFIRM MODAL ===================== -->
+<div class="confirm-overlay" id="confirmOverlay" hidden>
+  <div class="confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h3 id="confirmTitle">Reset all data?</h3>
+    <p>This will permanently erase all chapter progress, notes and streaks stored in this browser. Type <strong>RESET</strong> below to confirm.</p>
+    <input type="text" id="confirmInput" placeholder="Type RESET">
+    <div class="confirm-actions">
+      <button class="btn-secondary" id="confirmCancelBtn">Cancel</button>
+      <button class="btn-danger" id="confirmProceedBtn" disabled>Erase Everything</button>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- confetti canvas -->
+<canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+<script src="script.js"></script>
+</body>
+</html>
